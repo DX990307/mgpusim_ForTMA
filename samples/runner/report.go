@@ -69,21 +69,12 @@ func (r *Runner) defineMetrics() {
 }
 
 func (r *Runner) addKernelTimeTracer() {
-	if *unifiedGPUFlag != "" {
-		r.kernelTimeCounter = tracing.NewBusyTimeTracer(
-			r.platform.Engine,
-			func(task tracing.Task) bool {
-				return task.What == "*driver.LaunchUnifiedMultiGPUKernelCommand"
-			})
-		tracing.CollectTrace(r.platform.Driver, r.kernelTimeCounter)
-	} else {
-		r.kernelTimeCounter = tracing.NewBusyTimeTracer(
-			r.platform.Engine,
-			func(task tracing.Task) bool {
-				return task.What == "*driver.LaunchKernelCommand"
-			})
-		tracing.CollectTrace(r.platform.Driver, r.kernelTimeCounter)
-	}
+	r.kernelTimeCounter = tracing.NewBusyTimeTracer(
+		r.platform.Engine,
+		func(task tracing.Task) bool {
+			return task.What == "*driver.LaunchKernelCommand"
+		})
+	tracing.CollectTrace(r.platform.Driver, r.kernelTimeCounter)
 
 	for _, gpu := range r.platform.GPUs {
 		gpuKernelTimeCounter := tracing.NewBusyTimeTracer(
@@ -469,10 +460,10 @@ func (r *Runner) reportCacheHitRate() {
 	for _, tracer := range r.cacheHitRateTracers {
 		readHit := tracer.tracer.GetStepCount("read-hit")
 		readMiss := tracer.tracer.GetStepCount("read-miss")
-		readMSHRHit := tracer.tracer.GetStepCount("read-mshr-hit")
+		readMSHRHit := tracer.tracer.GetStepCount("read-mshr-miss")
 		writeHit := tracer.tracer.GetStepCount("write-hit")
 		writeMiss := tracer.tracer.GetStepCount("write-miss")
-		writeMSHRHit := tracer.tracer.GetStepCount("write-mshr-hit")
+		writeMSHRHit := tracer.tracer.GetStepCount("write-mshr-miss")
 
 		totalTransaction := readHit + readMiss + readMSHRHit +
 			writeHit + writeMiss + writeMSHRHit

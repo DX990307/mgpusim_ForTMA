@@ -21,6 +21,7 @@ const (
 )
 
 // MemoryAllocatorType global flag variable for setting the allocator type
+// var MemoryAllocatorType = AllocatorTypeDefault
 var MemoryAllocatorType = AllocatorTypeDefault
 
 // DeviceProperties defines the properties of a device
@@ -86,6 +87,7 @@ func (d *Device) allocateUnifiedGPUPage() (pAddr uint64) {
 		}
 
 		devSelected = dev
+		break
 	}
 
 	if devSelected == nil {

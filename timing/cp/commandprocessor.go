@@ -89,6 +89,10 @@ func (p *CommandProcessor) RegisterCU(cu CUInterfaceForCP) {
 func (p *CommandProcessor) Tick(now sim.VTimeInSec) bool {
 	madeProgress := false
 
+	// if now >= 0.000001355 {
+	// 	print("CommandProcessor\n")
+	// }
+
 	madeProgress = p.sendMsgsOut(now) || madeProgress
 	madeProgress = p.tickDispatchers(now) || madeProgress
 	madeProgress = p.processReqFromDriver(now) || madeProgress
