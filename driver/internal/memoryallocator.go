@@ -152,13 +152,14 @@ func (a *memoryAllocatorImpl) allocatePages(
 		vAddr := nextVAddr + uint64(i)*pageSize
 
 		page := vm.Page{
-			PID:      pid,
-			VAddr:    vAddr,
-			PAddr:    pAddr,
-			PageSize: pageSize,
-			Valid:    true,
-			Unified:  unified,
-			DeviceID: uint64(a.deviceIDByPAddr(pAddr)),
+			PID:          pid,
+			VAddr:        vAddr,
+			PAddr:        pAddr,
+			PageSize:     pageSize,
+			Valid:        true,
+			Unified:      unified,
+			AccessCounts: 0,
+			DeviceID:     uint64(a.deviceIDByPAddr(pAddr)),
 		}
 
 		// fmt.Printf("page.addr is %x piage Device ID is %d \n", page.PAddr, page.DeviceID)
